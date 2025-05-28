@@ -17,7 +17,7 @@ public class Udaj {
 
 
     }
-
+    // dementor
     public StringProperty nastrojProperty() {
         return nastroj;
     }
