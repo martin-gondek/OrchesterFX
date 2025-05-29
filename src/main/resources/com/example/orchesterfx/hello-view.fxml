@@ -49,6 +49,8 @@
                     </font>
                 </TextField>
                 <Button fx:id="zapisButton" layoutX="568.0" layoutY="30.0" mnemonicParsing="false" text="Zapíš údaje" />
+                <Button fx:id="vymazButton" layoutX="568.0" layoutY="80.0" mnemonicParsing="false" text="Vymaz" />
+
             </children>
         </AnchorPane>
         <BorderPane prefHeight="200.0" prefWidth="200.0">
