@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="600.0" spacing="15.0"
+<VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="600.0" spacing="15.0"
       xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.orchesterfx.HelloController">
     <padding>
@@ -28,6 +28,16 @@
     </HBox>
 
     <HBox spacing="10">
+        <Label text="Zvuk:"/>
+        <TextField fx:id="zvukField" promptText="napr. tralalá"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Hráč:"/>
+        <TextField fx:id="hracField" promptText="napr. Andrej"/>
+    </HBox>
+
+    <HBox spacing="10">
         <Label fx:id="specifickyLabel" text="Počet dier/strún:"/>
         <TextField fx:id="specifickyField" promptText="napr. 6"/>
     </HBox>
@@ -39,10 +49,12 @@
 
     <TableView fx:id="tableView" prefHeight="300.0">
         <columns>
-            <TableColumn fx:id="colTyp" text="Typ" prefWidth="100.0"/>
-            <TableColumn fx:id="colNazov" text="Názov" prefWidth="150.0"/>
-            <TableColumn fx:id="colCena" text="Cena" prefWidth="100.0"/>
-            <TableColumn fx:id="colDetail" text="Detail" prefWidth="150.0"/>
+            <TableColumn fx:id="colTyp" text="Typ" prefWidth="80.0"/>
+            <TableColumn fx:id="colNazov" text="Názov" prefWidth="100.0"/>
+            <TableColumn fx:id="colCena" text="Cena" prefWidth="80.0"/>
+            <TableColumn fx:id="colZvuk" text="Zvuk" prefWidth="100.0"/>
+            <TableColumn fx:id="colHrac" text="Hráč" prefWidth="100.0"/>
+            <TableColumn fx:id="colDetail" text="Detail" prefWidth="120.0"/>
         </columns>
     </TableView>
 </VBox>

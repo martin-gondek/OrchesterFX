@@ -3,8 +3,8 @@ package com.example.orchesterfx;
 public class DychovyNastroj extends HudobnyNastroj {
     private int pocetDier;
 
-    public DychovyNastroj(String nazov, double cena, int pocetDier) {
-        super(nazov, cena);
+    public DychovyNastroj(String nazov, double cena, String zvuk, String hrac, int pocetDier) {
+        super(nazov, cena, zvuk, hrac);
         this.pocetDier = pocetDier;
     }
 
