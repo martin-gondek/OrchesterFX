@@ -12,6 +12,10 @@ public class KlavesovyNastroj extends HudobnyNastroj {
         return "Klávesový";
     }
 
+    public String getPocetKlaves() {
+        return String.valueOf(pocetKlaves);
+    }
+
     @Override
     public String getDetail() {
         return "Pocet klaves: " + pocetKlaves;

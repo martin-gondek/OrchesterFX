@@ -46,6 +46,11 @@
         <Button fx:id="pridajButton" text="Pridať"/>
         <Button fx:id="vymazButton" text="Vymazať označené"/>
     </HBox>
+    <HBox spacing="10">
+        <Button fx:id="vypocitajButton" text="Vypočítaj počet"/>
+        <Label fx:id="vysledokLabel" text="Výsledok sa zobrazí tu"/>
+    </HBox>
+
 
     <TableView fx:id="tableView" prefHeight="300.0">
         <columns>

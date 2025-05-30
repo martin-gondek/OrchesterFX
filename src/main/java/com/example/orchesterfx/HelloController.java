@@ -8,6 +8,8 @@ import javafx.beans.property.SimpleStringProperty;
 import java.io.*;
 
 public class HelloController {
+    @FXML private Button vypocitajButton;
+    @FXML private Label vysledokLabel;
 
     @FXML private ComboBox<String> typCombo;
     @FXML private TextField nazovField, cenaField, zvukField, hracField, specifickyField;
@@ -37,6 +39,24 @@ public class HelloController {
         vymazButton.setOnAction(e -> vymazNastroj());
 
         nacitajZoSuboru();
+        vypocitajButton.setOnAction(e -> vypocitajPocet());
+
+    }
+    private void vypocitajPocet() {
+        String typ = typCombo.getValue();
+        int sucet = 0;
+
+        for (HudobnyNastroj n : data) {
+            if ("Dychový".equals(typ) && n instanceof DychovyNastroj dych) {
+                sucet += Integer.parseInt(dych.getPocetDier());
+            } else if ("Strunový".equals(typ) && n instanceof StrunovyNastroj strun) {
+                sucet += Integer.parseInt(strun.getPocetStrun());
+            } else if ("Klávesový".equals(typ) && n instanceof KlavesovyNastroj klav) {
+                sucet += Integer.parseInt(klav.getPocetKlaves());
+            }
+        }
+
+        vysledokLabel.setText("Celkový počet pre " + typ + ": " + sucet);
     }
 
     private void aktualizujPopisSpecifikacie() {

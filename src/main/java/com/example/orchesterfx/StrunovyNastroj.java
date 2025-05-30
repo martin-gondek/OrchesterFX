@@ -12,6 +12,10 @@ public class StrunovyNastroj extends HudobnyNastroj {
         return "Strunový";
     }
 
+    public String getPocetStrun() {
+        return String.valueOf(pocetStrun);
+    }
+
     @Override
     public String getDetail() {
         return "Pocet strun: " + pocetStrun;
