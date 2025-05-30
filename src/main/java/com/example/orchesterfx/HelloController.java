@@ -1,153 +1,140 @@
 package com.example.orchesterfx;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.io.*;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class HelloController implements Initializable {
+public class HelloController {
 
-    @FXML
-    private Button vymazButton;
+    @FXML private ComboBox<String> typCombo;
+    @FXML private TextField nazovField;
+    @FXML private TextField cenaField;
+    @FXML private TextField specifickyField;
+    @FXML private Label specifickyLabel;
 
+    @FXML private TableView<HudobnyNastroj> tableView;
+    @FXML private TableColumn<HudobnyNastroj, String> colTyp;
+    @FXML private TableColumn<HudobnyNastroj, String> colNazov;
+    @FXML private TableColumn<HudobnyNastroj, String> colCena;
+    @FXML private TableColumn<HudobnyNastroj, String> colDetail;
 
-    @FXML
-    private TextField nastroj;
+    @FXML private Button pridajButton;
+    @FXML private Button vymazButton;
 
-    @FXML
-    private TextField dychy;
-
-    @FXML
-    private TextField struny;
-
-    @FXML
-    private TableView<Udaj> tableView;
-
-    @FXML
-    private TableColumn<Udaj, String> col1;
+    private final ObservableList<HudobnyNastroj> data = FXCollections.observableArrayList();
 
     @FXML
-    private TableColumn<Udaj,String > col3;
+    public void initialize() {
+        typCombo.setItems(FXCollections.observableArrayList("Dychový", "Strunový"));
+        typCombo.setOnAction(e -> aktualizujPopisSpecifikacie());
 
-    @FXML
-    private TableColumn<Udaj, String> col2;
-
-    private final ObservableList<Udaj> data = FXCollections.observableArrayList();
-
-    @FXML
-    private Button zapisButton;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        col1.setOnEditCommit(event -> {
-            Udaj udaj = event.getRowValue();
-            udaj.nastrojProperty().set(event.getNewValue());
-            aktualizujSubor();
-        });
-
-        col2.setOnEditCommit(event -> {
-            Udaj udaj = event.getRowValue();
-            udaj.dychyProperty().set(event.getNewValue());
-            aktualizujSubor();
-        });
-
-        col3.setOnEditCommit(event -> {
-            Udaj udaj = event.getRowValue();
-            udaj.strunyProperty().set(event.getNewValue());
-            aktualizujSubor();
-        });
-
-        tableView.setEditable(true);
-        col1.setCellFactory(TextFieldTableCell.forTableColumn());
-        col2.setCellFactory(TextFieldTableCell.forTableColumn());
-        col3.setCellFactory(TextFieldTableCell.forTableColumn());
-        vymazButton.setOnAction(event -> vymazUdaj());
-        col1.setCellValueFactory(cellData -> cellData.getValue().nastrojProperty());
-        col2.setCellValueFactory(cellData -> cellData.getValue().dychyProperty());
-        col3.setCellValueFactory(cellData -> cellData.getValue().strunyProperty());
-
+        colTyp.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTyp()));
+        colNazov.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getNazov()));
+        colCena.setCellValueFactory(c -> new SimpleStringProperty(String.valueOf(c.getValue().getCena())));
+        colDetail.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDetail()));
 
         tableView.setItems(data);
 
-        try (BufferedReader br = new BufferedReader(new FileReader("sklad.txt"))) {
-            String riadok;
-            while ((riadok = br.readLine()) != null) {
-                String[] slova = riadok.split(",");
-                if (slova.length == 3) {
-                    data.add(new Udaj(slova[0], slova[1], slova[2]));
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Chyba pri čítaní súboru.");
-        }
+        pridajButton.setOnAction(e -> pridajNastroj());
+        vymazButton.setOnAction(e -> vymazNastroj());
 
-        zapisButton.setOnAction(event -> zapisUdaj());
+        nacitajZoSuboru();
     }
 
-    private void zapisUdaj() {
-        String n = nastroj.getText();
-        String d = dychy.getText();
-        String s = struny.getText();
-
-        if (n.isEmpty() || d.isEmpty() || s.isEmpty()) {
-            System.out.println("Vyplň všetky polia.");
-            return;
+    private void aktualizujPopisSpecifikacie() {
+        String typ = typCombo.getValue();
+        if ("Dychový".equals(typ)) {
+            specifickyLabel.setText("Počet dier:");
+        } else if ("Strunový".equals(typ)) {
+            specifickyLabel.setText("Počet strún:");
         }
+    }
 
-        String zapis = n + "," + d + "," + s;
+    private void pridajNastroj() {
+        try {
+            String typ = typCombo.getValue();
+            String nazov = nazovField.getText();
+            double cena = Double.parseDouble(cenaField.getText());
+            int specifickaHodnota = Integer.parseInt(specifickyField.getText());
 
+            HudobnyNastroj nastroj = switch (typ) {
+                case "Dychový" -> new DychovyNastroj(nazov, cena, specifickaHodnota);
+                case "Strunový" -> new StrunovyNastroj(nazov, cena, specifickaHodnota);
+                default -> null;
+            };
+
+            if (nastroj != null) {
+                data.add(nastroj);
+                zapisDoSuboru(nastroj);
+                vymazPolia();
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Chybný vstup – cena a počet musia byť čísla.");
+        }
+    }
+
+    private void vymazNastroj() {
+        HudobnyNastroj vybrany = tableView.getSelectionModel().getSelectedItem();
+        if (vybrany != null) {
+            data.remove(vybrany);
+            aktualizujSubor();
+        }
+    }
+
+    private void zapisDoSuboru(HudobnyNastroj nastroj) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("sklad.txt", true))) {
-            bw.write(zapis);
+            bw.write(nastroj.getTyp() + "," + nastroj.getNazov() + "," + nastroj.getCena() + "," + nastroj.getDetail());
             bw.newLine();
         } catch (IOException e) {
-            System.out.println("Nepodarilo sa zapísať do súboru.");
-        }
-
-        data.add(new Udaj(n, d, s));
-        nastroj.clear();
-        dychy.clear();
-        struny.clear();
-    }
-
-
-    private void vymazUdaj() {
-        Udaj vybrany = tableView.getSelectionModel().getSelectedItem();
-
-        if (vybrany == null) {
-            System.out.println("najprv vyber riadok.");
-            return;
-        }
-
-        data.remove(vybrany);
-
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("sklad.txt"))) {
-            for (Udaj u : data) {
-                String riadok = u.nastrojProperty().get() + "," + u.dychyProperty().get() + "," + u.strunyProperty().get();
-                bw.write(riadok);
-                bw.newLine();
-            }
-        } catch (IOException e) {
-            System.out.println("chyba pri aktualizacii.");
+            System.out.println("Chyba pri zápise.");
         }
     }
 
     private void aktualizujSubor() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("sklad.txt"))) {
-            for (Udaj u : data) {
-                String riadok = u.nastrojProperty().get() + "," + u.dychyProperty().get() + "," + u.strunyProperty().get();
-                bw.write(riadok);
+            for (HudobnyNastroj n : data) {
+                bw.write(n.getTyp() + "," + n.getNazov() + "," + n.getCena() + "," + n.getDetail());
                 bw.newLine();
             }
         } catch (IOException e) {
-            System.out.println("chyba pri zapise do suboru.");
+            System.out.println("Chyba pri prepise súboru.");
         }
     }
 
+    private void nacitajZoSuboru() {
+        try (BufferedReader br = new BufferedReader(new FileReader("sklad.txt"))) {
+            String riadok;
+            while ((riadok = br.readLine()) != null) {
+                String[] pole = riadok.split(",");
+                if (pole.length == 4) {
+                    String typ = pole[0];
+                    String nazov = pole[1];
+                    double cena = Double.parseDouble(pole[2]);
+                    int specificka = Integer.parseInt(pole[3].replaceAll("[^\\d]", ""));
 
+                    HudobnyNastroj nastroj = switch (typ) {
+                        case "Dychový" -> new DychovyNastroj(nazov, cena, specificka);
+                        case "Strunový" -> new StrunovyNastroj(nazov, cena, specificka);
+                        default -> null;
+                    };
+
+                    if (nastroj != null) {
+                        data.add(nastroj);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Chyba pri čítaní súboru.");
+        }
+    }
+
+    private void vymazPolia() {
+        nazovField.clear();
+        cenaField.clear();
+        specifickyField.clear();
+    }
 }

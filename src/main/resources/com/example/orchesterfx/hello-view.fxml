@@ -1,68 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="460.0" prefWidth="797.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.orchesterfx.HelloController">
+<VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="600.0" spacing="15.0"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.orchesterfx.HelloController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        <Insets top="20.0" left="20.0" right="20.0" bottom="20.0"/>
     </padding>
-    <children>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-            <children>
-                <Label layoutX="52.0" layoutY="31.0" text="Nástroj">
-                    <font>
-                        <Font size="15.0" />
-                    </font>
-                </Label>
-                <Label layoutX="52.0" layoutY="91.0" text="Dychy">
-                    <font>
-                        <Font size="15.0" />
-                    </font>
-                </Label>
-                <Label layoutX="52.0" layoutY="142.0" text="Struny">
-                    <font>
-                        <Font size="15.0" />
-                    </font>
-                </Label>
-                <TextField fx:id="nastroj" layoutX="132.0" layoutY="27.0">
-                    <font>
-                        <Font size="15.0" />
-                    </font>
-                </TextField>
-                <TextField fx:id="dychy" layoutX="133.0" layoutY="87.0">
-                    <font>
-                        <Font size="15.0" />
-                    </font>
-                </TextField>
-                <TextField fx:id="struny" layoutX="133.0" layoutY="138.0">
-                    <font>
-                        <Font size="15.0" />
-                    </font>
-                </TextField>
-                <Button fx:id="zapisButton" layoutX="568.0" layoutY="30.0" mnemonicParsing="false" text="Zapíš údaje" />
-                <Button fx:id="vymazButton" layoutX="568.0" layoutY="80.0" mnemonicParsing="false" text="Vymaz" />
 
-            </children>
-        </AnchorPane>
-        <BorderPane prefHeight="200.0" prefWidth="200.0">
-            <center>
-                <TableView fx:id="tableView" prefHeight="200.0" prefWidth="500.0" BorderPane.alignment="CENTER">
-                    <columns>
-                        <TableColumn fx:id="col1" prefWidth="150.0" text="Nástroj" />
-                        <TableColumn fx:id="col2" prefWidth="300.0" text="Dychy" />
-                        <TableColumn fx:id="col3" prefWidth="300.0" text="Struny" />
-                    </columns>
-                </TableView>
-            </center>
-        </BorderPane>
-    </children>
+    <HBox spacing="10">
+        <Label text="Typ nástroja:"/>
+        <ComboBox fx:id="typCombo" promptText="Vyber typ"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Názov:"/>
+        <TextField fx:id="nazovField" promptText="napr. Flauta"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Cena:"/>
+        <TextField fx:id="cenaField" promptText="napr. 129.99"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label fx:id="specifickyLabel" text="Počet dier/strún:"/>
+        <TextField fx:id="specifickyField" promptText="napr. 6"/>
+    </HBox>
+
+    <HBox spacing="15">
+        <Button fx:id="pridajButton" text="Pridať"/>
+        <Button fx:id="vymazButton" text="Vymazať označené"/>
+    </HBox>
+
+    <TableView fx:id="tableView" prefHeight="300.0">
+        <columns>
+            <TableColumn fx:id="colTyp" text="Typ" prefWidth="100.0"/>
+            <TableColumn fx:id="colNazov" text="Názov" prefWidth="150.0"/>
+            <TableColumn fx:id="colCena" text="Cena" prefWidth="100.0"/>
+            <TableColumn fx:id="colDetail" text="Detail" prefWidth="150.0"/>
+        </columns>
+    </TableView>
 </VBox>

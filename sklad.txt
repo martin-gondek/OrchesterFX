@@ -1,3 +1,2 @@
-Husle,2,4
-Gitara,2,5
-husle,0,4
+Dychový,Flauta,1500.0,Dier: 4
+Strunový,daco,5.0,Struny: 5
