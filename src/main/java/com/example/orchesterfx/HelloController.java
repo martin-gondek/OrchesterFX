@@ -31,7 +31,6 @@ public class HelloController {
         colZvuk.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getZvuk()));
         colHrac.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getHrac()));
         colDetail.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDetail()));
-
         tableView.setItems(data);
 
         pridajButton.setOnAction(e -> pridajNastroj());
@@ -131,7 +130,7 @@ public class HelloController {
                     double cena = Double.parseDouble(pole[2]);
                     String zvuk = pole[3];
                     String hrac = pole[4];
-                    int specificky = Integer.parseInt(pole[5].replaceAll("\\D+", ""));
+                    int specificky = Integer.parseInt(pole[5].replaceAll("\\D", ""));
 
                     HudobnyNastroj n = switch (typ) {
                         case "Dychový" -> new DychovyNastroj(nazov, cena, zvuk, hrac, specificky);

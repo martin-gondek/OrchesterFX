@@ -8,10 +8,6 @@ public class DychovyNastroj extends HudobnyNastroj {
         this.pocetDier = pocetDier;
     }
 
-    public int getPocetDier() {
-        return pocetDier;
-    }
-
     @Override
     public String getTyp() {
         return "Dychový";
@@ -19,6 +15,6 @@ public class DychovyNastroj extends HudobnyNastroj {
 
     @Override
     public String getDetail() {
-        return "Dier: " + pocetDier;
+        return "Pocet dier: " + pocetDier;
     }
 }

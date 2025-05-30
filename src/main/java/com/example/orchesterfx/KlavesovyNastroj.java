@@ -7,7 +7,6 @@ public class KlavesovyNastroj extends HudobnyNastroj {
         super(nazov, cena, zvuk, hrac);
         this.pocetKlaves = pocetKlaves;
     }
-
     @Override
     public String getTyp() {
         return "Klávesový";
@@ -15,6 +14,6 @@ public class KlavesovyNastroj extends HudobnyNastroj {
 
     @Override
     public String getDetail() {
-        return "Kláves má: " + pocetKlaves;
+        return "Pocet klaves: " + pocetKlaves;
     }
 }

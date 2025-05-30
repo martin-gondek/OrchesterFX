@@ -30,5 +30,6 @@ public abstract class HudobnyNastroj {
     }
 
     public abstract String getTyp();
-    public abstract String getDetail(); // Špecifický výpis pre každú podtriedu
+
+    public abstract String getDetail();
 }
