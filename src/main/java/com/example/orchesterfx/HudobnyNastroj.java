@@ -13,6 +13,7 @@ public abstract class HudobnyNastroj {
         this.hrac = hrac;
     }
 
+    // GETTERY
     public String getNazov() {
         return nazov;
     }
@@ -29,7 +30,23 @@ public abstract class HudobnyNastroj {
         return hrac;
     }
 
-    public abstract String getTyp();
+    // SETTERY
+    public void setNazov(String nazov) {
+        this.nazov = nazov;
+    }
 
+    public void setCena(double cena) {
+        this.cena = cena;
+    }
+
+    public void setZvuk(String zvuk) {
+        this.zvuk = zvuk;
+    }
+
+    public void setHrac(String hrac) {
+        this.hrac = hrac;
+    }
+
+    public abstract String getTyp();
     public abstract String getDetail();
 }

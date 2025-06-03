@@ -1,4 +1,5 @@
-Dychový,Flauta,150.0,tudududu,Fero,5
-Strunový,Husle,200.0,fiiiii,Ja,4
-Klávesový,Klavir,5000.0,neviem,Ferdinand,88
+Dychový,Flauta,200.0,tudududu,Fero,Pocet dier: 5
+Strunový,Husle,200.0,fiiiii,Ja,Pocet strun: 4
+Klávesový,Klavir,5000.0,duuum,Ferdinand,Pocet klaves: 88
 Klávesový,Cembalo,1300.0,bumbum,Ocko,Pocet klaves: 76
+Dychový,tuba,300.0,tudud,Leopold,Pocet dier: 1

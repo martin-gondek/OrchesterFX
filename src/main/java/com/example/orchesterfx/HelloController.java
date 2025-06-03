@@ -1,10 +1,13 @@
 package com.example.orchesterfx;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.util.converter.DoubleStringConverter;
+
 import java.io.*;
 
 public class HelloController {
@@ -27,21 +30,53 @@ public class HelloController {
         typCombo.setItems(FXCollections.observableArrayList("Dychový", "Strunový", "Klávesový"));
         typCombo.setOnAction(e -> aktualizujPopisSpecifikacie());
 
+        tableView.setEditable(true);
+
         colTyp.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getTyp()));
         colNazov.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getNazov()));
+        colNazov.setCellFactory(TextFieldTableCell.forTableColumn());
+        colNazov.setOnEditCommit(e -> {
+            e.getRowValue().setNazov(e.getNewValue());
+            aktualizujSubor();
+        });
+
         colCena.setCellValueFactory(c -> new SimpleStringProperty(String.valueOf(c.getValue().getCena())));
+        colCena.setCellFactory(TextFieldTableCell.forTableColumn());
+        colCena.setOnEditCommit(e -> {
+            try {
+                double novaCena = Double.parseDouble(e.getNewValue());
+                e.getRowValue().setCena(novaCena);
+                aktualizujSubor();
+            } catch (NumberFormatException ex) {
+                System.out.println("Chybná cena");
+            }
+        });
+
         colZvuk.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getZvuk()));
+        colZvuk.setCellFactory(TextFieldTableCell.forTableColumn());
+        colZvuk.setOnEditCommit(e -> {
+            e.getRowValue().setZvuk(e.getNewValue());
+            aktualizujSubor();
+        });
+
         colHrac.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getHrac()));
+        colHrac.setCellFactory(TextFieldTableCell.forTableColumn());
+        colHrac.setOnEditCommit(e -> {
+            e.getRowValue().setHrac(e.getNewValue());
+            aktualizujSubor();
+        });
+
         colDetail.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDetail()));
+
         tableView.setItems(data);
 
         pridajButton.setOnAction(e -> pridajNastroj());
         vymazButton.setOnAction(e -> vymazNastroj());
-
-        nacitajZoSuboru();
         vypocitajButton.setOnAction(e -> vypocitajPocet());
 
+        nacitajZoSuboru();
     }
+
     private void vypocitajPocet() {
         String typ = typCombo.getValue();
         int sucet = 0;
@@ -66,8 +101,7 @@ public class HelloController {
         } else if ("Strunový".equals(typ)) {
             specifickyLabel.setText("Počet strún:");
         } else if ("Klávesový".equals(typ)) {
-            specifickyLabel.setText("Počet kláves");
-
+            specifickyLabel.setText("Počet kláves:");
         }
     }
 
@@ -143,14 +177,14 @@ public class HelloController {
         try (BufferedReader br = new BufferedReader(new FileReader("sklad.txt"))) {
             String riadok;
             while ((riadok = br.readLine()) != null) {
-                String[] pole = riadok.split(",", 6); // max 6 častí
+                String[] pole = riadok.split(",", 6);
                 if (pole.length == 6) {
                     String typ = pole[0];
                     String nazov = pole[1];
                     double cena = Double.parseDouble(pole[2]);
                     String zvuk = pole[3];
                     String hrac = pole[4];
-                    int specificky = Integer.parseInt(pole[5].replaceAll("\\D", ""));
+                    int specificky = Integer.parseInt(pole[5].replaceAll("\\D+", ""));
 
                     HudobnyNastroj n = switch (typ) {
                         case "Dychový" -> new DychovyNastroj(nazov, cena, zvuk, hrac, specificky);

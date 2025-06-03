@@ -7,13 +7,14 @@ public class StrunovyNastroj extends HudobnyNastroj {
         super(nazov, cena, zvuk, hrac);
         this.pocetStrun = pocetStrun;
     }
-    @Override
-    public String getTyp() {
-        return "Strunový";
-    }
 
     public String getPocetStrun() {
         return String.valueOf(pocetStrun);
+    }
+
+    @Override
+    public String getTyp() {
+        return "Strunový";
     }
 
     @Override
